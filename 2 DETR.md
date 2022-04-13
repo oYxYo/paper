@@ -54,3 +54,6 @@ scenes-2015](https://arxiv.org/pdf/1506.04878v3.pdf)。
   - 预测结果和GT之间的一一对应的损失函数；
   - 可以预测目标位置和目标之间关系的模型。
 ### A. Objection detecyion set prediction loss
+N: predictions的数量，远大于一张图像中的目标数目<br>
+y: ground truth set of objects<br>
+![](https://latex.codecogs.com/svg.image?\hat{y}=\{\hat{y}_i\}^N_{i=1}): the set of N predictions<br>
