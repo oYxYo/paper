@@ -37,3 +37,20 @@ DETR在训练时，所需时间更长，而且在消融实验中，我们进一�
 > **one-vs-one** ：建立k=n*(n-1)/2个二项分类器。(A,B) (A,C) (B,C)<br>
 ### 2. Transformers 和并行解码
 Transformer的自注意力机制更新序列中一个元素的方法是：将整个序列的信息综合进去。
+结合transformer和并行计算，可以权衡集合预测的全局计算和计算复杂度之间的。
+### 3. 目标检测
+大部分目标检测方法基于初始猜测做预测。
+两阶段检测器用proposal预测检测框，单阶段用anchors或潜在的目标中心点组成的网格，并且最近的研究表明，检测效果好坏与这些初始设置密切相关。
+DETR不需要这些手工设计的阶段，将检测流程简化为基于图像本身检测目标。<br>
+**基于集合的损失函数：**
+一些检测器也用到了双向匹配损失（例如SSD），但是这些检测器仅用卷积层或全连接层模拟不同预测之间的关系，然后用NMS来提升检测结果精读。<br>
+**recurrent detector（maybe 基于rnn的检测器） ：** 
+与detr相近的方法有实例分割和目标检测任务中的：[Recurrent Instance Segmentation-2015](https://www.robots.ox.ac.uk/~tvg/publications/2016/RIS7.pdf), [End-to-End Instance Segmentation with Recurrent Attention-2017](https://arxiv.org/pdf/1605.09410v5.pdf), [End-to-end people detection in crowded
+scenes-2015](https://arxiv.org/pdf/1506.04878v3.pdf)。
+他们也都使用了双向损失函数和编码解码结构，但这些方法只在小规模数据集上做了实验，并且是基于自回归模型RNN，因此效果不如有并行解码的transformer。
+
+## DETR
+模型中最重要的两点：
+  - 预测结果和GT之间的一一对应的损失函数；
+  - 可以预测目标位置和目标之间关系的模型。
+### A. Objection detecyion set prediction loss
